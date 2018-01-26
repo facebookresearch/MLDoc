@@ -15,6 +15,7 @@ import random
 
 
 logger = logging.getLogger(__name__)
+random.seed(42)
 
 def check_data_sufficiency(
     example_counts,
@@ -84,8 +85,8 @@ def generate_samples(
             min_count / total_required_min for _, min_count
             in label_required_min.items()
         ]
-        print("Start sampling {} with balanced class prior:".format(dialect))
-        print(updated_label_priors)
+        logger.info("Start sampling {} with balanced class prior:".format(dialect))
+        logger.info(updated_label_priors)
 
         train_size_factors = [1, 2, 5, 10, 20]
         train_sizes = [min_num_train * k for k in train_size_factors]
@@ -204,7 +205,7 @@ def generate_samples(
                     )
                 train_sets[4].append(ex)
             else:
-                print("Finished sampling")
+                logger.info("Finished sampling.")
                 break
             i += 1
 
@@ -283,7 +284,7 @@ def main():
                 int(args.num_dev),
                 int(args.min_num_train),
             )
-            print("Finished sampling {}".format(dialect))
+            logger.info("Finished sampling {}".format(dialect))
 
 
 if __name__ == '__main__':
