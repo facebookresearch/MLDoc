@@ -5,16 +5,16 @@
 # LICENSE file in the root directory of this source tree.
 #
 #!/usr/bin/env python3
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
+
+import argparse
 import codecs
+import logging
+import numpy as np
 import os
 import random
-import numpy as np
-import argparse
 
+
+logger = logging.getLogger(__name__)
 
 def check_data_sufficiency(
     example_counts,
@@ -50,7 +50,7 @@ def generate_samples(
                 examples[label].append(doc)
             except Exception as e:
                 invalid_examples += 1
-        print('Filtered {} invalid examples.'.format(invalid_examples))
+        logger.info('Filtered {} invalid examples.'.format(invalid_examples))
 
     for label in examples.keys():
         examples[label] = list(set(examples[label]))
@@ -58,9 +58,10 @@ def generate_samples(
 
     example_counts = {k: len(v) for k, v in examples.items()}
     total_exp = sum([len(v) for v in examples.values()])
+    assert total_exp > 0, 'Found 0 valid exaple.'
     emp_prior = {k: round(len(v) / total_exp, 3) for k, v in examples.items()}
-    print('Empirical class prior for {}'.format(dialect))
-    print(emp_prior)
+    logger.info('Empirical class prior for {}'.format(dialect))
+    logger.info(emp_prior)
     num_samples = min_num_train + num_dev + num_test
     if check_data_sufficiency(
         example_counts,
@@ -222,26 +223,40 @@ def generate_samples(
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
+        '--threshold',
+        default=0.8,
+        type=float,
         dest='threshold',
         help='ratio of expected number of examples if uniform prior',
     )
     parser.add_argument(
+        '--input-dir',
         dest='input_dir',
         help='directory of rcv2 stories to sample from',
     )
     parser.add_argument(
+        '--output-dir',
         dest='output_dir',
         help='directory to store samples',
     )
     parser.add_argument(
+        '--num-test',
+        default=1000,
+        type=int,
         dest='num_test',
         help='number of test examples',
     )
     parser.add_argument(
+        '--num-dev',
+        default=1000,
+        type=int,
         dest='num_dev',
         help='number of dev examples',
     )
     parser.add_argument(
+        '--min-num-train',
+        default=5000,
+        type=int,
         dest='min_num_train',
         help='minimal number of train examples',
     )
@@ -251,6 +266,10 @@ def main():
 
     labels = ['C', 'E', 'G', 'M']
     class_prior_dict = dict(zip(labels, class_prior))
+
+    if args.input_dir is None or args.output_dir is None:
+        raise Exception(
+            'Need to provide directory of RCV2 data and output directory.')
 
     for current_path, _, dialects in os.walk(args.input_dir):
         for dialect in dialects:
