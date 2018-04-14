@@ -7,7 +7,6 @@
 #!/usr/bin/env python3
 
 import argparse
-import codecs
 import logging
 import numpy as np
 import os
@@ -43,7 +42,7 @@ def generate_samples(
 ):
     np.random.seed(1234)
     examples = {'C': [], 'E': [], 'G': [], 'M': []}
-    with codecs.open(input_file, "r", "utf-8") as input_stream:
+    with open(input_file, "r") as input_stream:
         invalid_examples = 0
         for line in input_stream:
             try:
@@ -88,20 +87,18 @@ def generate_samples(
         logger.info("Start sampling {} with balanced class prior:".format(dialect))
         logger.info(updated_label_priors)
 
-        train_size_factors = [1, 2, 5, 10, 20]
+        train_size_factors = [1, 2, 5, 10]
         train_sizes = [min_num_train * k for k in train_size_factors]
 
         train_sets = []
         train_files = []
-        dev_file = codecs.open(
+        dev_file = open(
             os.path.join(output_dir, '{}.dev'.format(dialect)),
             'w',
-            encoding="utf-8",
         )
-        test_file = codecs.open(
+        test_file = open(
             os.path.join(output_dir, '{}.test'.format(dialect)),
             'w',
-            encoding="utf-8",
         )
 
         i = 0
@@ -123,7 +120,7 @@ def generate_samples(
                 if len(train_sets) == 0:
                     train_sets.append([])
                     train_files.append(
-                        codecs.open(
+                        open(
                             os.path.join(
                                 output_dir,
                                 '{}.train.{}'.format(
@@ -132,7 +129,6 @@ def generate_samples(
                                 ),
                             ),
                             'w',
-                            encoding='utf-8',
                         )
                     )
                 train_sets[0].append(ex)
@@ -140,7 +136,7 @@ def generate_samples(
                 if len(train_sets) == 1:
                     train_sets.append([])
                     train_files.append(
-                        codecs.open(
+                        open(
                             os.path.join(
                                 output_dir,
                                 '{}.train.{}'.format(
@@ -149,7 +145,6 @@ def generate_samples(
                                 ),
                             ),
                             'w',
-                            encoding='utf-8',
                         )
                     )
                 train_sets[1].append(ex)
@@ -157,7 +152,7 @@ def generate_samples(
                 if len(train_sets) == 2:
                     train_sets.append([])
                     train_files.append(
-                        codecs.open(
+                        open(
                             os.path.join(
                                 output_dir,
                                 '{}.train.{}'.format(
@@ -166,7 +161,6 @@ def generate_samples(
                                 ),
                             ),
                             'w',
-                            encoding='utf-8',
                         )
                     )
                 train_sets[2].append(ex)
@@ -174,7 +168,7 @@ def generate_samples(
                 if len(train_sets) == 3:
                     train_sets.append([])
                     train_files.append(
-                        codecs.open(
+                        open(
                             os.path.join(
                                 output_dir,
                                 '{}.train.{}'.format(
@@ -183,7 +177,6 @@ def generate_samples(
                                 ),
                             ),
                             'w',
-                            encoding='utf-8',
                         )
                     )
                 train_sets[3].append(ex)
@@ -191,7 +184,7 @@ def generate_samples(
                 if len(train_sets) == 4:
                     train_sets.append([])
                     train_files.append(
-                        codecs.open(
+                        open(
                             os.path.join(
                                 output_dir,
                                 '{}.train.{}'.format(
@@ -200,7 +193,6 @@ def generate_samples(
                                 ),
                             ),
                             'w',
-                            encoding='utf-8',
                         )
                     )
                 train_sets[4].append(ex)
@@ -242,7 +234,7 @@ def main():
     )
     parser.add_argument(
         '--num-test',
-        default=1000,
+        default=4000,
         type=int,
         dest='num_test',
         help='number of test examples',
@@ -256,7 +248,7 @@ def main():
     )
     parser.add_argument(
         '--min-num-train',
-        default=5000,
+        default=1000,
         type=int,
         dest='min_num_train',
         help='minimal number of train examples',
