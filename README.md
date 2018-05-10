@@ -6,7 +6,23 @@ This script generates a subset of the Reuters corpus with balanced class priors 
 
 > In this paper, we propose a new subset of the Reuters corpus with balanced class priors for eight languages. By adding Italian, Russian, Japanese and Chinese, we cover languages which are very different with respect to syntax, morphology, etc. We provide strong baselines for all language transfer directions using multilingual word and sentence embeddings respectively. Our goal is to offer a freely available framework to evaluate cross-lingual document classification, and we hope to foster by these means, research in this important area.
 # Citation
-If you use this dataset and/or script in your paper, please cite our LREC paper:
+If you use this dataset and/or script in your paper, please cite our LREC [paper](http://www.lrec-conf.org/proceedings/lrec2018/summaries/658.html):
+```
+@InProceedings{SCHWENK18.658,
+  author = {Holger Schwenk and Xian Li},
+  title = {A Corpus for Multilingual Document Classification in Eight Languages},
+  booktitle = {Proceedings of the Eleventh International Conference on Language Resources and Evaluation (LREC 2018)},
+  year = {2018},
+  month = {may},
+  date = {7-12},
+  location = {Miyazaki, Japan},
+  editor = {Nicoletta Calzolari (Conference chair) and Khalid Choukri and Christopher Cieri and Thierry Declerck and Sara Goggi and Koiti Hasida and Hitoshi Isahara and Bente Maegaard and Joseph Mariani and Hélène Mazo and Asuncion Moreno and Jan Odijk and Stelios Piperidis and Takenobu Tokunaga},
+  publisher = {European Language Resources Association (ELRA)},
+  address = {Paris, France},
+  isbn = {979-10-95546-00-9},
+  language = {english}
+  }
+```
 # Benchmark Dataset (RCV1/RCV2 indices)
 Access to the actual news stories of the Reuters Corpus (both RCV1 and RCV2) requires a NIST agreement (see http://trec.nist.gov/data/reuters/reuters.html for details). So we created indices to the sample documents included in the benchmark dataset. They are organized by language, and each language has a .train, .dev and .test file respectively. Each row in those files contains 
 ```
