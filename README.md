@@ -26,14 +26,24 @@ If you use this dataset and/or script in your paper, please cite our LREC [paper
 # Benchmark Dataset (RCV1/RCV2 indices)
 Access to the actual news stories of the Reuters Corpus (both RCV1 and RCV2) requires a NIST agreement (see http://trec.nist.gov/data/reuters/reuters.html for details). So we created indices to the sample documents included in the benchmark dataset. They are organized by language, and each language has a .train, .dev and .test file respectively. Each row in those files contains 
 ```
-<class_label>\t<document_index>
+<document_index>
 ```
-where `document_index` is a concatenation of sub-corpus name and document name. See our paper for benchmark results on this dataset.
-# Run the sampling script
+where `document_index` is a concatenation of sub-corpus name and document name, e.g. index FDCH5-39373 corresponds to text extracted between the `<p>` and `</p>` in `<rcv_dir>`/FDCH5/39373.xml.
+
+To use these indices to run the exact same benchmarking, the following script can be used to generate the actual documents and their labels:
+```
+python generate_documents.py \
+--indices-file <path_to_an_indices_file> \
+--output-filename <path_to_output_file> \
+--rcv-dir <directory_of_rcv_data>
+```
+See our paper for benchmark results on this dataset.
+# Evaluate variance through bootstrapping 
 The sampling script generates samples with uniform class priors:
 ```
 python sampling_rcv2.py --input-dir <input_dir> --output-dir <output_dir>
 ```
+Run it with different seeds to generate different train/dev/test samples to evaluate classification results variance.
 ## Requirements and Installation
 - A computer running macOS or Linux
 - Python version >= 0.3.0.
