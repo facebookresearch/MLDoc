@@ -59,7 +59,7 @@ def main():
                     [p.text for p in xml_parsed.findall(".//p")]
                 )
                 output_f.write(
-                    '{}{}{}\n'.format(topics[0], delim_str, doc.encode('utf-8'))
+                    '{}{}{}\n'.format(topics[0], delim_str, doc).encode('utf-8')
                 )
             except Exception as e:
                 logging.error('Failed to parse xml file: {}.'.format(doc_path))
