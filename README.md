@@ -37,6 +37,11 @@ python generate_documents.py \
 --output-filename <path_to_output_file> \
 --rcv-dir <directory_of_rcv_data>
 ```
+To generate documents for all language using a single script:
+```
+bash generate_all_documents.sh <output_directory> <directory_of_rcv_data>
+```
+
 See our paper for benchmark results on this dataset.
 # Evaluate variance through bootstrapping 
 The sampling script generates samples with uniform class priors:
